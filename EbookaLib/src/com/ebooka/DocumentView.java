@@ -60,13 +60,7 @@ public class DocumentView extends View implements ZoomListener {
         setFocusable(true);
         setFocusableInTouchMode(true);
         initMultiTouchZoomIfAvailable(zoomModel);
-        setOnLongClickListener(new View.OnLongClickListener() {
-
-            public boolean onLongClick(View arg0) {
-                zoomModel.toggleZoomControls();
-                return false;
-            }
-        });
+       
     }
 
     private void initMultiTouchZoomIfAvailable(ZoomModel zoomModel) {
