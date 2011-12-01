@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_width="fill_parent"
+	android:layout_height="fill_parent"
+	android:orientation="vertical">
+
+	<com.ebooka.DocumentView
+		android:id="@+id/documentView"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent" />
+
+
+
+	<LinearLayout
+		android:background="#79000000"
+		android:layout_alignParentBottom="true"
+		android:padding="5dip"
+		android:id="@+id/toolsLayout"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
+		<ImageView
+			android:layout_weight="1"
+			android:id="@+id/zoomMinus"
+			android:layout_width="wrap_content"
+			android:src="@android:drawable/btn_minus"
+			android:layout_height="wrap_content" />
+		<ImageView
+			android:layout_weight="1"
+			android:id="@+id/zoomPlus"
+			android:layout_width="wrap_content"
+			android:src="@android:drawable/btn_plus"
+			android:layout_height="wrap_content" />
+
+		<ImageView
+			android:layout_weight="1"
+			android:padding="5dip"
+			android:id="@+id/prevPage"
+			android:layout_width="wrap_content"
+			android:src="@android:drawable/ic_media_rew"
+			android:layout_height="wrap_content"
+			></ImageView>
+
+		<ImageView
+			android:layout_weight="1"
+			android:padding="5dip"
+			android:id="@+id/nextPage"
+			android:layout_width="wrap_content"
+			android:src="@android:drawable/ic_media_ff"
+			android:layout_height="wrap_content"
+			 />
+
+		<TextView
+			android:textColor="#ffffff"
+			android:id="@+id/currentPageIndex"
+			android:text="199/320"
+			android:padding="1dip"
+			android:layout_weight="1"
+			android:gravity="center"
+			android:textAppearance="?android:attr/textAppearanceMedium"
+			android:layout_width="wrap_content"
+			android:layout_height="match_parent"
+			></TextView>
+
+
+
+	</LinearLayout>
+
+
+
+</RelativeLayout>

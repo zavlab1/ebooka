@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.ebooka" android:versionCode="5" android:versionName="1.4">
+    
+    <application android:icon="@drawable/icon" android:debuggable="true" android:label="Ebooka">
+        <activity android:name=".PdfViewerActivity" android:configChanges="orientation|keyboardHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:mimeType="application/pdf"/>
+            </intent-filter>
+        </activity>
+        
+        <activity android:name=".DjvuViewerActivity" android:configChanges="orientation|keyboardHidden">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:mimeType="image/djvu"/>
+            </intent-filter>
+        </activity>
+        
+        <activity android:name=".MainBrowserActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+    </application>
+    
+    <uses-sdk android:minSdkVersion="7"/>
+    <uses-permission android:name="com.android.email.permission.ACCESS_PROVIDER"/>
+    <uses-permission android:name="com.android.email.permission.READ_ATTACHMENT"/>
+</manifest>
