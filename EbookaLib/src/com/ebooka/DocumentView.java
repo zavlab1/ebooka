@@ -38,7 +38,8 @@ public class DocumentView extends View implements ZoomListener {
     private long lastDownEventTime;
     private static final int DOUBLE_TAP_TIME = 200;
     private MultiTouchZoom multiTouchZoom;
-
+    private View menuViewLayout;
+    
     public DocumentView(Context context) {
         super(context);
     }
@@ -51,10 +52,11 @@ public class DocumentView extends View implements ZoomListener {
         super(context, attrs, defStyle);
     }
 
-    public void init(final ZoomModel zoomModel, DecodingProgressModel progressModel, CurrentPageModel currentPageModel) {
+    public void init(final ZoomModel zoomModel, DecodingProgressModel progressModel, CurrentPageModel currentPageModel, View menuView) {
         this.zoomModel = zoomModel;
         this.progressModel = progressModel;
         this.currentPageModel = currentPageModel;
+        this.menuViewLayout = menuView;
         setKeepScreenOn(true);
         scroller = new Scroller(getContext());
         setFocusable(true);
@@ -112,11 +114,14 @@ public class DocumentView extends View implements ZoomListener {
     // on scrollChanged can be called from scrollTo just after new layout
     // applied so we should wait for relayout
     public void postUpdatePageVisibility() {
+    	
+    	
         post(new Runnable() {
             public void run() {
                 updatePageVisibility();
             }
         });
+        
 
     }
 
@@ -224,15 +229,22 @@ public class DocumentView extends View implements ZoomListener {
 
             break;
         case MotionEvent.ACTION_MOVE:
+        	
             Log.d("DEBUG", ev.getX() + " : " + ev.getY());
-            scrollBy((int) (lastX - ev.getX()), (int) (lastY - ev.getY()));
+            if(menuViewLayout.getVisibility()==View.VISIBLE){
+            	scrollBy((int) (lastX - ev.getX()), (int) (lastY - ev.getY()));
+            }else{
+            	scrollBy(0, (int) (lastY - ev.getY()));
+            }
             setLastPosition(ev);
             break;
         case MotionEvent.ACTION_UP:
             velocityTracker.computeCurrentVelocity(1000);
 
+            if(menuViewLayout.getVisibility()==View.VISIBLE){
             scroller.fling(getScrollX(), getScrollY(), (int) -velocityTracker.getXVelocity(),
                     (int) -velocityTracker.getYVelocity(), getLeftLimit(), getRightLimit(), getTopLimit(), getBottomLimit());
+            }
 
             velocityTracker.recycle();
             velocityTracker = null;
@@ -378,4 +390,12 @@ public class DocumentView extends View implements ZoomListener {
             scroller.abortAnimation();
         }
     }
+
+	public boolean isInitialized() {
+		return isInitialized;
+	}
+
+	public void setInitialized(boolean isInitialized) {
+		this.isInitialized = isInitialized;
+	}
 }
