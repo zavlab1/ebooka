@@ -53,14 +53,14 @@ class Page {
 
     private Paint fillPaint() {
         final Paint fillPaint = new Paint();
-        fillPaint.setColor(Color.GRAY);
+        fillPaint.setColor(Color.WHITE);
         fillPaint.setStyle(Paint.Style.FILL);
         return fillPaint;
     }
 
     private TextPaint textPaint() {
         final TextPaint paint = new TextPaint();
-        paint.setColor(Color.BLACK);
+        paint.setColor(Color.GRAY);
         paint.setAntiAlias(true);
         paint.setTextSize(24);
         paint.setTextAlign(Paint.Align.CENTER);
