@@ -36,7 +36,7 @@ public class DocumentView extends View implements ZoomListener {
     private RectF viewRect;
     private boolean inZoom;
     private long lastDownEventTime;
-    private static final int DOUBLE_TAP_TIME = 200;
+    private static final int DOUBLE_TAP_TIME = 300;
     private MultiTouchZoom multiTouchZoom;
     private View menuViewLayout;
     
@@ -191,7 +191,7 @@ public class DocumentView extends View implements ZoomListener {
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         super.onTouchEvent(ev);
-        if (multiTouchZoom != null) {
+        if (multiTouchZoom != null && menuViewLayout.getVisibility()==View.VISIBLE) {
             if (multiTouchZoom.onTouchEvent(ev)) {
                 return true;
             }

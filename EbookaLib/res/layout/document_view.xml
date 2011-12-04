@@ -8,6 +8,9 @@
     <LinearLayout
         android:id="@+id/linearMenuLayout"
         android:layout_width="match_parent"
+        android:minHeight="20dip"
+        android:paddingRight="5dip"
+        android:gravity="center_vertical"
         android:layout_height="wrap_content"
          >
         
@@ -68,7 +71,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#80000000"
-        android:padding="5dip" >
+        android:padding="3dip" >
 
         <LinearLayout
             android:id="@+id/relativeLayout1"
@@ -77,25 +80,26 @@
             android:layout_weight="0" >
 
             <ImageView
+                android:paddingLeft="15dip"
+                android:paddingRight="15dip"
                 android:id="@+id/moveLeft"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_alignTop="@+id/imageView3"
-                android:padding="6dip"
                 android:src="@drawable/left" />
 
             <ImageView
                 android:id="@+id/moveDefault"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:padding="6dip"
                 android:src="@drawable/align" />
 
             <ImageView
+                android:paddingLeft="15dip"
+                android:paddingRight="15dip"
                 android:id="@+id/moveRight"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:padding="6dip"
                 android:src="@drawable/right" />
         </LinearLayout>
 
@@ -116,27 +120,19 @@
 
                 <ImageView
                     android:id="@+id/zoomMinus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:src="@android:drawable/btn_minus" />
 
                 <ImageView
                     android:id="@+id/zoomPlus"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
                     android:layout_marginLeft="4dip"
                     android:layout_weight="1"
                     android:src="@android:drawable/btn_plus" />
             </LinearLayout>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="0"
-                android:gravity="center_horizontal"
-                android:text="@string/app_name"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
         </LinearLayout>
 
         <LinearLayout

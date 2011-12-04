@@ -241,7 +241,8 @@ public abstract class BaseViewerActivity extends Activity implements
 
 	private void setWindowTitle() {
 		final String name = getIntent().getData().getLastPathSegment();
-		getWindow().setTitle(name);
+		//getWindow().setTitle(getResources().getResourceName(R.string.app_name));
+		setTitle(R.string.app_name);
 		((TextView) findViewById(R.id.bookName)).setText(name);
 	}
 
