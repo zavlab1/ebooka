@@ -221,9 +221,9 @@ public class DocumentView extends View implements ZoomListener {
             int y = (int) ev.getY();
             int maxX = getWidth();
             int maxY = getHeight();
-            if (x > maxX * 0.80 || y > maxY * 0.80) {
+            if (x > maxX * 0.80 /*|| y > maxY * 0.90*/) {
                 scrollNextPage();
-            } else if (x < maxX * 0.20 || y < maxY * 0.20) {
+            } else if (x < maxX * 0.20 /* || y < maxY * 0.10*/) {
                 scrollPrevPage();
             }
 
