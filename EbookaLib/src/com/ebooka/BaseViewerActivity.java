@@ -72,7 +72,7 @@ public abstract class BaseViewerActivity extends Activity implements
 		decodeService.open(getIntent().getData());
 		}catch (Exception e) {
 			finish();
-			Toast.makeText(this, "PDF is corrupted", Toast.LENGTH_LONG).show();
+			Toast.makeText(this, "Document is corrupted", Toast.LENGTH_LONG).show();
 			return;
 		}
 
