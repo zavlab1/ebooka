@@ -29,6 +29,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public abstract class BaseViewerActivity extends Activity implements
 		DecodingProgressListener, CurrentPageListener {
@@ -67,7 +68,13 @@ public abstract class BaseViewerActivity extends Activity implements
 		decodeService.setContentResolver(getContentResolver());
 		decodeService.setContainerView(documentView);
 		documentView.setDecodeService(decodeService);
+		try{
 		decodeService.open(getIntent().getData());
+		}catch (Exception e) {
+			finish();
+			Toast.makeText(this, "PDF is corrupted", Toast.LENGTH_LONG).show();
+			return;
+		}
 
 		final SharedPreferences sharedPreferences = getSharedPreferences(
 				DOCUMENT_VIEW_STATE_PREFERENCES, 0);
