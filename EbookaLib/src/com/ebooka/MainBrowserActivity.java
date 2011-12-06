@@ -1,13 +1,12 @@
 package com.ebooka;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.net.Uri;
-
-
 import java.io.File;
 import java.io.FileFilter;
 import java.util.HashMap;
+
+import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 
 public class MainBrowserActivity extends BaseBrowserActivity
 {

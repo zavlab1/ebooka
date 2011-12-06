@@ -3,13 +3,6 @@ package com.ebooka;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.ebooka.events.ZoomListener;
-import com.ebooka.models.CurrentPageModel;
-import com.ebooka.models.DecodingProgressModel;
-import com.ebooka.models.ZoomModel;
-import com.ebooka.multitouch.MultiTouchZoom;
-import com.ebooka.multitouch.MultiTouchZoomImpl;
-
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.RectF;
@@ -20,6 +13,13 @@ import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
 import android.widget.Scroller;
+
+import com.ebooka.events.ZoomListener;
+import com.ebooka.models.CurrentPageModel;
+import com.ebooka.models.DecodingProgressModel;
+import com.ebooka.models.ZoomModel;
+import com.ebooka.multitouch.MultiTouchZoom;
+import com.ebooka.multitouch.MultiTouchZoomImpl;
 
 public class DocumentView extends View implements ZoomListener {
     ZoomModel zoomModel;
@@ -36,10 +36,10 @@ public class DocumentView extends View implements ZoomListener {
     private RectF viewRect;
     private boolean inZoom;
     private long lastDownEventTime;
-    private static final int DOUBLE_TAP_TIME = 300;
+    private static final int DOUBLE_TAP_TIME = 200;
     private MultiTouchZoom multiTouchZoom;
     private View menuViewLayout;
-    
+
     public DocumentView(Context context) {
         super(context);
     }
@@ -52,7 +52,8 @@ public class DocumentView extends View implements ZoomListener {
         super(context, attrs, defStyle);
     }
 
-    public void init(final ZoomModel zoomModel, DecodingProgressModel progressModel, CurrentPageModel currentPageModel, View menuView) {
+    public void init(final ZoomModel zoomModel, DecodingProgressModel progressModel, CurrentPageModel currentPageModel,
+            View menuView) {
         this.zoomModel = zoomModel;
         this.progressModel = progressModel;
         this.currentPageModel = currentPageModel;
@@ -62,7 +63,7 @@ public class DocumentView extends View implements ZoomListener {
         setFocusable(true);
         setFocusableInTouchMode(true);
         initMultiTouchZoomIfAvailable(zoomModel);
-       
+
     }
 
     private void initMultiTouchZoomIfAvailable(ZoomModel zoomModel) {
@@ -93,7 +94,7 @@ public class DocumentView extends View implements ZoomListener {
     }
 
     private void goToPageImpl(final int toPage) {
-        scrollTo(0, pages.get(toPage).getTop());
+        scrollTo(getScrollX(), pages.get(toPage).getTop());
     }
 
     @Override
@@ -114,14 +115,12 @@ public class DocumentView extends View implements ZoomListener {
     // on scrollChanged can be called from scrollTo just after new layout
     // applied so we should wait for relayout
     public void postUpdatePageVisibility() {
-    	
-    	
+
         post(new Runnable() {
             public void run() {
                 updatePageVisibility();
             }
         });
-        
 
     }
 
@@ -171,8 +170,8 @@ public class DocumentView extends View implements ZoomListener {
         stopScroller();
         final float ratio = newZoom / oldZoom;
         invalidatePageSizes();
-        scrollTo((int) ((getScrollX() + getWidth() / 2) * ratio - getWidth() / 2), (int) ((getScrollY() + getHeight() / 2)
-                * ratio - getHeight() / 2));
+        scrollTo((int) ((getScrollX() + getWidth() / 2) * ratio - getWidth() / 2),
+                (int) ((getScrollY() + getHeight() / 2) * ratio - getHeight() / 2));
         postInvalidate();
     }
 
@@ -191,7 +190,7 @@ public class DocumentView extends View implements ZoomListener {
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         super.onTouchEvent(ev);
-        if (multiTouchZoom != null && menuViewLayout.getVisibility()==View.VISIBLE) {
+        if (multiTouchZoom != null && menuViewLayout.getVisibility() == View.VISIBLE) {
             if (multiTouchZoom.onTouchEvent(ev)) {
                 return true;
             }
@@ -200,12 +199,12 @@ public class DocumentView extends View implements ZoomListener {
                 setLastPosition(ev);
                 multiTouchZoom.setResetLastPointAfterZoom(false);
             }
-        }
 
-        if (velocityTracker == null) {
-            velocityTracker = VelocityTracker.obtain();
+            if (velocityTracker == null) {
+                velocityTracker = VelocityTracker.obtain();
+            }
+            velocityTracker.addMovement(ev);
         }
-        velocityTracker.addMovement(ev);
 
         switch (ev.getAction()) {
         case MotionEvent.ACTION_DOWN:
@@ -221,33 +220,34 @@ public class DocumentView extends View implements ZoomListener {
             int y = (int) ev.getY();
             int maxX = getWidth();
             int maxY = getHeight();
-            if (x > maxX * 0.80 /*|| y > maxY * 0.90*/) {
+            if (x > maxX * 0.80 /* || y > maxY * 0.90 */) {
                 scrollNextPage();
-            } else if (x < maxX * 0.20 /* || y < maxY * 0.10*/) {
+            } else if (x < maxX * 0.20 /* || y < maxY * 0.10 */) {
                 scrollPrevPage();
             }
 
             break;
         case MotionEvent.ACTION_MOVE:
-        	
             Log.d("DEBUG", ev.getX() + " : " + ev.getY());
-            if(menuViewLayout.getVisibility()==View.VISIBLE){
-            	scrollBy((int) (lastX - ev.getX()), (int) (lastY - ev.getY()));
-            }else{
-            	scrollBy(0, (int) (lastY - ev.getY()));
+            if (menuViewLayout.getVisibility() == View.VISIBLE) {
+                scrollBy((int) (lastX - ev.getX()), (int) (lastY - ev.getY()));
+            } else {
+                scrollBy(0, (int) (lastY - ev.getY()));
             }
             setLastPosition(ev);
             break;
         case MotionEvent.ACTION_UP:
-            velocityTracker.computeCurrentVelocity(1000);
 
-            if(menuViewLayout.getVisibility()==View.VISIBLE){
-            scroller.fling(getScrollX(), getScrollY(), (int) -velocityTracker.getXVelocity(),
-                    (int) -velocityTracker.getYVelocity(), getLeftLimit(), getRightLimit(), getTopLimit(), getBottomLimit());
+            if (menuViewLayout.getVisibility() == View.VISIBLE) {
+                velocityTracker.computeCurrentVelocity(1000);
+
+                scroller.fling(getScrollX(), getScrollY(), (int) -velocityTracker.getXVelocity(),
+                        (int) -velocityTracker.getYVelocity(), getLeftLimit(), getRightLimit(), getTopLimit(),
+                        getBottomLimit());
+
+                velocityTracker.recycle();
+                velocityTracker = null;
             }
-
-            velocityTracker.recycle();
-            velocityTracker = null;
 
             break;
         }
@@ -391,11 +391,11 @@ public class DocumentView extends View implements ZoomListener {
         }
     }
 
-	public boolean isInitialized() {
-		return isInitialized;
-	}
+    public boolean isInitialized() {
+        return isInitialized;
+    }
 
-	public void setInitialized(boolean isInitialized) {
-		this.isInitialized = isInitialized;
-	}
+    public void setInitialized(boolean isInitialized) {
+        this.isInitialized = isInitialized;
+    }
 }
