@@ -99,6 +99,7 @@ public abstract class BaseBrowserActivity extends Activity {
     View.OnClickListener onTab2 = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            setTitle(R.string.app_name);
             unselectTabs();
             v.setSelected(true);
             listView.setAdapter(recentAdapter);
@@ -114,6 +115,7 @@ public abstract class BaseBrowserActivity extends Activity {
     View.OnClickListener onTab3 = new View.OnClickListener() {
         @Override
         public void onClick(View v) {
+            setTitle(R.string.app_name);
             unselectTabs();
             v.setSelected(true);
             listView.setAdapter(searchAdapter);
@@ -144,7 +146,7 @@ public abstract class BaseBrowserActivity extends Activity {
 
                 @Override
                 protected void onPreExecute() {
-                    dialog = ProgressDialog.show(BaseBrowserActivity.this, "", "Searching. Please wait...", true);
+                    dialog = ProgressDialog.show(BaseBrowserActivity.this, "", getString(R.string.searching_please_wait_), true);
                     super.onPreExecute();
                 }
 
@@ -190,7 +192,7 @@ public abstract class BaseBrowserActivity extends Activity {
 
     private void setCurrentDir(File newDir) {
         adapter.setCurrentDirectory(newDir);
-        getWindow().setTitle(newDir.getAbsolutePath());
+        setTitle(newDir.getAbsolutePath());
     }
 
     @Override

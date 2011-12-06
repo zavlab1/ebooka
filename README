@@ -1,16 +1,22 @@
 Ebooka PDF and Nook PDF Reader
-==
-This PDF Reader based on vudroid - (djvu and pdf viewer) but with 
-enhanced design and some new features:
 
-0. Correct Fonts, Arts.
-1. Supports Nook Reader keyboards.
-2. Slide pages by touch.
-3. Slide pages by volume keys.
+PDF Reader based on vudroid - (djvu and pdf viewer) with enhanced design and new features:
 
-
-
- 
+Correct Fonts, simple gui elements
+Supports Nook Reader keyboards (configured)
+Scroll pages by tap on the screen
+Scroll pages by volume keys (configured)
+Fixate pages by width
+Scan device for new books
+Double tap to hide show gui elements
 
 
-  
+Этот PDF Reader на основе vudroid - (DjVu и PDF Viewer) с улучшенным дизайном и новыми функциями:
+
+Правильные шрифты, простые элементы графического интерфейса
+Поддерживает клавишы Nook (настраивается)
+Прокрутка страниц по касанию екрана
+Прокрутка страниц с помощью клавишиш регулировки громкости (Прокрутка)
+Фиксирование страниц по ширине
+Сканирование устройства на наличие новых книг
+Двойное нажатие, чтобы скрыть показать элементы графического интерфейса пользователя

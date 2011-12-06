@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Ebooka Lib</string>
+    <string name="Document_is_corrupted">Документ поврежден</string>
+    <string name="browse">Промотр</string>
+    <string name="recent">Недавние</string>
+    <string name="scan">Поиск</string>
+    <string name="preferences">Настройки</string>
+    <string name="off">Выкл</string>
+    <string name="on">Вкл</string>
+    <string name="full_screen_">На весь экран </string>
+    <string name="keys">Клавиши</string>
+    <string name="up_next_down_prev">Вверх - след, Вниз - пред</string>
+    <string name="up_prev_down_next">Вверх - пред, Вниз - след</string>
+    <string name="close_book">Закрыть книгу</string>
+    <string name="exit">Выход</string>
+    <string name="searching_please_wait_">Происходит поиск, подождите</string>
+    <string name="next">След</string>
+    <string name="prev">Пред</string>
+    <string name="close_dialog">Закрыть диалог</string>
+</resources>

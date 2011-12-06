@@ -7,6 +7,7 @@ import java.util.HashMap;
 import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
+import android.widget.Toast;
 
 public class MainBrowserActivity extends BaseBrowserActivity
 {
@@ -37,11 +38,16 @@ public class MainBrowserActivity extends BaseBrowserActivity
 
     @Override
     protected void showDocument(Uri uri)
-    {
+ {
+        try {
         final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
         String uriString = uri.toString();
         String extension = uriString.substring(uriString.lastIndexOf('.') + 1);
         intent.setClass(this, extensionToActivity.get(extension));
         startActivity(intent);
+        } catch (Exception e) {
+            Toast.makeText(this, R.string.Document_is_corrupted, Toast.LENGTH_LONG).show();
+        }
+
     }
 }

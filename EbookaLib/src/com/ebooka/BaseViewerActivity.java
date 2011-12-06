@@ -66,7 +66,7 @@ public abstract class BaseViewerActivity extends Activity implements DecodingPro
             decodeService.open(getIntent().getData());
         } catch (Exception e) {
             finish();
-            Toast.makeText(this, "Document is corrupted", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.Document_is_corrupted, Toast.LENGTH_LONG).show();
             return;
         }
 
@@ -120,20 +120,25 @@ public abstract class BaseViewerActivity extends Activity implements DecodingPro
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            if (seekBar.getVisibility() == View.VISIBLE) {
-                documentView.goToPage(progress - 1);
-            }
-
+            documentView.goToPage(progress - 1);
         }
     };
 
     public View.OnClickListener onPrefDialog = new View.OnClickListener() {
 
         public void onClick(View arg0) {
-            String fullScreenTxt = "Full Screen " + (viewerPreferences.isFullScreen() ? "Off" : "On");
-            String items[] = { "Close Book", fullScreenTxt, "Exit" };
+            String fullScreenTxt = getString(R.string.full_screen_) + " "
+                    + (viewerPreferences.isFullScreen() ? getString(R.string.off) : getString(R.string.on));
+
+            String nookTxt = getString(R.string.keys)
+                    + " "
+                    + (!viewerPreferences.isUpKeyNext() ? getString(R.string.up_next_down_prev)
+                            : getString(R.string.up_prev_down_next));
+
+            String items[] = { getString(R.string.close_book), fullScreenTxt, nookTxt, getString(R.string.exit),
+                    getString(R.string.close_dialog) };
             AlertDialog.Builder builder = new AlertDialog.Builder(BaseViewerActivity.this);
-            builder.setTitle("Preferences");
+            builder.setTitle(R.string.preferences);
             builder.setItems(items, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int item) {
                     if (item == 0) {
@@ -143,7 +148,11 @@ public abstract class BaseViewerActivity extends Activity implements DecodingPro
                         finish();
                         startActivity(getIntent());
                     } else if (item == 2) {
+                        viewerPreferences.setUpKeyNext(!viewerPreferences.isUpKeyNext());
+                    } else if (item == 3) {
                         exit();
+                    } else if (item == 3) {
+                        dialog.dismiss();
                     }
                 }
             });
@@ -220,10 +229,19 @@ public abstract class BaseViewerActivity extends Activity implements DecodingPro
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         Log.d("DEBUG", "" + keyCode);
-        if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == 94 || keyCode == 92) {
-            documentView.scrollNextPage();
-        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == 95 || keyCode == 93) {
-            documentView.scrollPrevPage();
+
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == 94 || keyCode == 92) {
+            if (viewerPreferences.isUpKeyNext()) {
+                documentView.scrollNextPage();
+            } else {
+                documentView.scrollPrevPage();
+            }
+        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == 95 || keyCode == 93) {
+            if (viewerPreferences.isUpKeyNext()) {
+                documentView.scrollPrevPage();
+            } else {
+                documentView.scrollNextPage();
+            }
         } else {
             return super.onKeyDown(keyCode, event);
         }
@@ -255,7 +273,9 @@ public abstract class BaseViewerActivity extends Activity implements DecodingPro
     public void currentPageChanged(int pageIndex) {
         // page num
         updatesValues(pageIndex);
+        seekBar.setOnSeekBarChangeListener(null);
         seekBar.setProgress(pageIndex + 1);
+        seekBar.setOnSeekBarChangeListener(onSeek);
         saveCurrentPage();
     }
 

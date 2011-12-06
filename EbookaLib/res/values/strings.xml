@@ -1,4 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Ebooka Lib</string>
+    <string name="Document_is_corrupted">Document is corrupted</string>
+    <string name="browse">Browse</string>
+    <string name="recent">Recent</string>
+    <string name="scan">Scan</string>
+    <string name="preferences">Preferences</string>
+    <string name="off">Off</string>
+    <string name="on">On</string>
+    <string name="full_screen_">Full Screen</string>
+    <string name="keys">Keys</string>
+    <string name="up_next_down_prev">Up - Next, Down - Prev</string>
+    <string name="up_prev_down_next">Up - Prev, Down - Next</string>
+    <string name="close_book">Close Book</string>
+    <string name="exit">Exit</string>
+    <string name="searching_please_wait_">Searching. Please wait...</string>
+    <string name="next">Next</string>
+    <string name="prev">Prev</string>
+    <string name="close_dialog">Close Dialog</string>
 </resources>
