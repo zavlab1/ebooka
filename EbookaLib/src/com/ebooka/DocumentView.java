@@ -94,7 +94,10 @@ public class DocumentView extends View implements ZoomListener {
     }
 
     private void goToPageImpl(final int toPage) {
-        scrollTo(getScrollX(), pages.get(toPage).getTop());
+        Page page = pages.get(toPage);
+        if (page != null) {
+            scrollTo(getScrollX(), page.getTop());
+        }
     }
 
     @Override
