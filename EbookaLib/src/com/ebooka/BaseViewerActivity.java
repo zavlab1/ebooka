@@ -374,13 +374,4 @@ public abstract class BaseViewerActivity extends Activity implements DecodingPro
         }
         return false;
     }
-
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        switch (id) {
-        case DIALOG_GOTO:
-            return new GoToPageDialog(this, documentView, decodeService);
-        }
-        return null;
-    }
 }

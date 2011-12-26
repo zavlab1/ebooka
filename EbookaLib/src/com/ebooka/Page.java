@@ -33,9 +33,9 @@ class Page {
 
     public void draw(Canvas canvas) {
         if (!isVisible()) {
-            return;
+            //return;
         }
-        canvas.drawRect(bounds, fillPaint);
+        //canvas.drawRect(bounds, fillPaint);
 
         canvas.drawText("Page " + (index + 1), bounds.centerX(), bounds.centerY(), textPaint);
         node.draw(canvas);

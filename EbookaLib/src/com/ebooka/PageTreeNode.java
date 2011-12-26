@@ -11,7 +11,7 @@ class PageTreeNode {
     private boolean decodingNow;
     private final RectF pageSliceBounds;
     private final Page page;
-    private PageTreeNode[] children;
+    private PageTreeNode[] childrens;
     private final int treeNodeDepthLevel;
     private Matrix matrix = new Matrix();
     private final Paint bitmapPaint = new Paint();
@@ -29,8 +29,8 @@ class PageTreeNode {
 
     public void updateVisibility() {
         invalidateChildren();
-        if (children != null) {
-            for (PageTreeNode child : children) {
+        if (childrens != null) {
+            for (PageTreeNode child : childrens) {
                 child.updateVisibility();
             }
         }
@@ -57,8 +57,8 @@ class PageTreeNode {
 
     private void invalidateRecursive() {
         invalidateFlag = true;
-        if (children != null) {
-            for (PageTreeNode child : children) {
+        if (childrens != null) {
+            for (PageTreeNode child : childrens) {
                 child.invalidateRecursive();
             }
         }
@@ -68,8 +68,8 @@ class PageTreeNode {
     void invalidateNodeBounds() {
         targetRect = null;
         targetRectF = null;
-        if (children != null) {
-            for (PageTreeNode child : children) {
+        if (childrens != null) {
+            for (PageTreeNode child : childrens) {
                 child.invalidateNodeBounds();
             }
         }
@@ -80,10 +80,10 @@ class PageTreeNode {
         if (getBitmap() != null) {
             canvas.drawBitmap(getBitmap(), new Rect(0, 0, getBitmap().getWidth(), getBitmap().getHeight()), getTargetRect(), bitmapPaint);
         }
-        if (children == null) {
+        if (childrens == null) {
             return;
         }
-        for (PageTreeNode child : children) {
+        for (PageTreeNode child : childrens) {
             child.draw(canvas);
         }
     }
@@ -100,9 +100,9 @@ class PageTreeNode {
     }
 
     private void invalidateChildren() {
-        if (thresholdHit() && children == null && isVisible()) {
+        if (thresholdHit() && childrens == null && isVisible()) {
             final int newThreshold = treeNodeDepthLevel * 2;
-            children = new PageTreeNode[]
+            childrens = new PageTreeNode[]
                     {
                             new PageTreeNode(documentView, new RectF(0, 0, 0.5f, 0.5f), page, newThreshold, this),
                             new PageTreeNode(documentView, new RectF(0.5f, 0, 1.0f, 0.5f), page, newThreshold, this),
@@ -214,10 +214,10 @@ class PageTreeNode {
     }
 
     private boolean isHiddenByChildren() {
-        if (children == null) {
+        if (childrens == null) {
             return false;
         }
-        for (PageTreeNode child : children) {
+        for (PageTreeNode child : childrens) {
             if (child.getBitmap() == null) {
                 return false;
             }
@@ -226,14 +226,14 @@ class PageTreeNode {
     }
 
     private void recycleChildren() {
-        if (children == null) {
+        if (childrens == null) {
             return;
         }
-        for (PageTreeNode child : children) {
+        for (PageTreeNode child : childrens) {
             child.recycle();
         }
         if (!childrenContainBitmaps()) {
-            children = null;
+            childrens = null;
         }
     }
 
@@ -242,10 +242,10 @@ class PageTreeNode {
     }
 
     private boolean childrenContainBitmaps() {
-        if (children == null) {
+        if (childrens == null) {
             return false;
         }
-        for (PageTreeNode child : children) {
+        for (PageTreeNode child : childrens) {
             if (child.containsBitmaps()) {
                 return true;
             }
@@ -256,8 +256,8 @@ class PageTreeNode {
     private void recycle() {
         stopDecodingThisNode();
         setBitmap(null);
-        if (children != null) {
-            for (PageTreeNode child : children) {
+        if (childrens != null) {
+            for (PageTreeNode child : childrens) {
                 child.recycle();
             }
         }
