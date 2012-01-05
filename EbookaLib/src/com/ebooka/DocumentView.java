@@ -338,6 +338,7 @@ public class DocumentView extends View implements ZoomListener {
         }
     }
 
+
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);

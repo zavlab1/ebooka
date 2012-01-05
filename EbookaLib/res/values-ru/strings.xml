@@ -18,4 +18,5 @@
     <string name="next">След</string>
     <string name="prev">Пред</string>
     <string name="close_dialog">Закрыть диалог</string>
+     <string name="clean_recent">Очистить недавние</string>
 </resources>

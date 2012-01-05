@@ -12,6 +12,8 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -142,7 +144,8 @@ public abstract class BaseBrowserActivity extends Activity {
 
                 @Override
                 protected void onPreExecute() {
-                    dialog = ProgressDialog.show(BaseBrowserActivity.this, "", getString(R.string.searching_please_wait_), true);
+                    dialog = ProgressDialog.show(BaseBrowserActivity.this, "",
+                            getString(R.string.searching_please_wait_), true);
                     super.onPreExecute();
                 }
 
@@ -160,6 +163,24 @@ public abstract class BaseBrowserActivity extends Activity {
         }
 
     };
+
+    @Override
+    public boolean onCreateOptionsMenu(android.view.Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.nav_menu, menu);
+        return true;
+    };
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.clean_recent) {
+            viewerPreferences.cleanAll();
+            recentAdapter.setUris(viewerPreferences.getRecent());
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+
+    }
 
     private List<View> tabs;
 

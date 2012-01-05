@@ -57,4 +57,11 @@ public class ViewerPreferences {
         Collections.reverse(list);
         return list;
     }
+
+    public void cleanAll() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.commit();
+
+    }
 }
