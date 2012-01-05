@@ -35,8 +35,6 @@ class Page {
         if (!isVisible()) {
             return;
         }
-        canvas.drawRect(bounds, fillPaint);
-
         canvas.drawText("Page " + (index + 1), bounds.centerX(), bounds.centerY(), textPaint);
         node.draw(canvas);
         canvas.drawLine(bounds.left, bounds.top, bounds.right, bounds.top, strokePaint);

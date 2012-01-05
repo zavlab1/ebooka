@@ -1,8 +1,13 @@
 package com.ebooka;
 
-import android.graphics.*;
-
 import java.lang.ref.SoftReference;
+
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.graphics.RectF;
 
 class PageTreeNode {
     private static final int SLICE_SIZE = 65535;
@@ -11,7 +16,7 @@ class PageTreeNode {
     private boolean decodingNow;
     private final RectF pageSliceBounds;
     private final Page page;
-    private PageTreeNode[] children;
+    private PageTreeNode[] childrens;
     private final int treeNodeDepthLevel;
     private Matrix matrix = new Matrix();
     private final Paint bitmapPaint = new Paint();
@@ -20,7 +25,8 @@ class PageTreeNode {
     private Rect targetRect;
     private RectF targetRectF;
 
-    PageTreeNode(DocumentView documentView, RectF localPageSliceBounds, Page page, int treeNodeDepthLevel, PageTreeNode parent) {
+    PageTreeNode(DocumentView documentView, RectF localPageSliceBounds, Page page, int treeNodeDepthLevel,
+            PageTreeNode parent) {
         this.documentView = documentView;
         this.pageSliceBounds = evaluatePageSliceBounds(localPageSliceBounds, parent);
         this.page = page;
@@ -29,8 +35,8 @@ class PageTreeNode {
 
     public void updateVisibility() {
         invalidateChildren();
-        if (children != null) {
-            for (PageTreeNode child : children) {
+        if (childrens != null) {
+            for (PageTreeNode child : childrens) {
                 child.updateVisibility();
             }
         }
@@ -57,8 +63,8 @@ class PageTreeNode {
 
     private void invalidateRecursive() {
         invalidateFlag = true;
-        if (children != null) {
-            for (PageTreeNode child : children) {
+        if (childrens != null) {
+            for (PageTreeNode child : childrens) {
                 child.invalidateRecursive();
             }
         }
@@ -68,22 +74,22 @@ class PageTreeNode {
     void invalidateNodeBounds() {
         targetRect = null;
         targetRectF = null;
-        if (children != null) {
-            for (PageTreeNode child : children) {
+        if (childrens != null) {
+            for (PageTreeNode child : childrens) {
                 child.invalidateNodeBounds();
             }
         }
     }
 
-
     void draw(Canvas canvas) {
         if (getBitmap() != null) {
-            canvas.drawBitmap(getBitmap(), new Rect(0, 0, getBitmap().getWidth(), getBitmap().getHeight()), getTargetRect(), bitmapPaint);
+            canvas.drawBitmap(getBitmap(), new Rect(0, 0, getBitmap().getWidth(), getBitmap().getHeight()),
+                    getTargetRect(), bitmapPaint);
         }
-        if (children == null) {
+        if (childrens == null) {
             return;
         }
-        for (PageTreeNode child : children) {
+        for (PageTreeNode child : childrens) {
             child.draw(canvas);
         }
     }
@@ -100,15 +106,13 @@ class PageTreeNode {
     }
 
     private void invalidateChildren() {
-        if (thresholdHit() && children == null && isVisible()) {
+        if (thresholdHit() && childrens == null && isVisible()) {
             final int newThreshold = treeNodeDepthLevel * 2;
-            children = new PageTreeNode[]
-                    {
-                            new PageTreeNode(documentView, new RectF(0, 0, 0.5f, 0.5f), page, newThreshold, this),
-                            new PageTreeNode(documentView, new RectF(0.5f, 0, 1.0f, 0.5f), page, newThreshold, this),
-                            new PageTreeNode(documentView, new RectF(0, 0.5f, 0.5f, 1.0f), page, newThreshold, this),
-                            new PageTreeNode(documentView, new RectF(0.5f, 0.5f, 1.0f, 1.0f), page, newThreshold, this)
-                    };
+            childrens = new PageTreeNode[] {
+                    new PageTreeNode(documentView, new RectF(0, 0, 0.5f, 0.5f), page, newThreshold, this),
+                    new PageTreeNode(documentView, new RectF(0.5f, 0, 1.0f, 0.5f), page, newThreshold, this),
+                    new PageTreeNode(documentView, new RectF(0, 0.5f, 0.5f, 1.0f), page, newThreshold, this),
+                    new PageTreeNode(documentView, new RectF(0.5f, 0.5f, 1.0f, 1.0f), page, newThreshold, this) };
         }
         if (!thresholdHit() && getBitmap() != null || !isVisible()) {
             recycleChildren();
@@ -142,7 +146,8 @@ class PageTreeNode {
                         setBitmap(bitmap);
                         invalidateFlag = false;
                         setDecodingNow(false);
-                        page.setAspectRatio(documentView.decodeService.getPageWidth(page.index), documentView.decodeService.getPageHeight(page.index));
+                        page.setAspectRatio(documentView.decodeService.getPageWidth(page.index),
+                                documentView.decodeService.getPageHeight(page.index));
                         invalidateChildren();
                     }
                 });
@@ -186,9 +191,9 @@ class PageTreeNode {
         if (this.decodingNow != decodingNow) {
             this.decodingNow = decodingNow;
             if (decodingNow) {
-                documentView.progressModel.increase();
+                documentView.getProgressModel().increase();
             } else {
-                documentView.progressModel.decrease();
+                documentView.getProgressModel().decrease();
             }
         }
     }
@@ -200,7 +205,8 @@ class PageTreeNode {
             matrix.postTranslate(page.bounds.left, page.bounds.top);
             RectF targetRectF = new RectF();
             matrix.mapRect(targetRectF, pageSliceBounds);
-            targetRect = new Rect((int) targetRectF.left, (int) targetRectF.top, (int) targetRectF.right, (int) targetRectF.bottom);
+            targetRect = new Rect((int) targetRectF.left, (int) targetRectF.top, (int) targetRectF.right,
+                    (int) targetRectF.bottom);
         }
         return targetRect;
     }
@@ -214,10 +220,10 @@ class PageTreeNode {
     }
 
     private boolean isHiddenByChildren() {
-        if (children == null) {
+        if (childrens == null) {
             return false;
         }
-        for (PageTreeNode child : children) {
+        for (PageTreeNode child : childrens) {
             if (child.getBitmap() == null) {
                 return false;
             }
@@ -226,14 +232,14 @@ class PageTreeNode {
     }
 
     private void recycleChildren() {
-        if (children == null) {
+        if (childrens == null) {
             return;
         }
-        for (PageTreeNode child : children) {
+        for (PageTreeNode child : childrens) {
             child.recycle();
         }
         if (!childrenContainBitmaps()) {
-            children = null;
+            childrens = null;
         }
     }
 
@@ -242,10 +248,10 @@ class PageTreeNode {
     }
 
     private boolean childrenContainBitmaps() {
-        if (children == null) {
+        if (childrens == null) {
             return false;
         }
-        for (PageTreeNode child : children) {
+        for (PageTreeNode child : childrens) {
             if (child.containsBitmaps()) {
                 return true;
             }
@@ -256,8 +262,8 @@ class PageTreeNode {
     private void recycle() {
         stopDecodingThisNode();
         setBitmap(null);
-        if (children != null) {
-            for (PageTreeNode child : children) {
+        if (childrens != null) {
+            for (PageTreeNode child : childrens) {
                 child.recycle();
             }
         }

@@ -4,7 +4,6 @@ import java.sql.Date;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -373,14 +372,5 @@ public abstract class BaseViewerActivity extends Activity implements DecodingPro
             return true;
         }
         return false;
-    }
-
-    @Override
-    protected Dialog onCreateDialog(int id) {
-        switch (id) {
-        case DIALOG_GOTO:
-            return new GoToPageDialog(this, documentView, decodeService);
-        }
-        return null;
     }
 }

@@ -23,7 +23,6 @@ import com.ebooka.multitouch.MultiTouchZoom;
 import com.ebooka.multitouch.MultiTouchZoomImpl;
 
 public class DocumentView extends View implements ZoomListener {
-
     float BORDER_LEN = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_MM, 10, getResources().getDisplayMetrics());
 
     ZoomModel zoomModel;
@@ -36,13 +35,14 @@ public class DocumentView extends View implements ZoomListener {
     private float lastY;
     private VelocityTracker velocityTracker;
     private Scroller scroller;
-    DecodingProgressModel progressModel;
+    private DecodingProgressModel progressModel;
     private RectF viewRect;
     private boolean inZoom;
     private long lastDownEventTime;
     private static final int DOUBLE_TAP_TIME = 200;
     private MultiTouchZoom multiTouchZoom;
     private View menuViewLayout;
+
 
     public DocumentView(Context context) {
         super(context);
@@ -122,7 +122,6 @@ public class DocumentView extends View implements ZoomListener {
     // on scrollChanged can be called from scrollTo just after new layout
     // applied so we should wait for relayout
     public void postUpdatePageVisibility() {
-
         post(new Runnable() {
             public void run() {
                 updatePageVisibility();
@@ -231,6 +230,7 @@ public class DocumentView extends View implements ZoomListener {
             } else if (x < BORDER_LEN) {
                 scrollPrevPage();
             }
+
 
             break;
         case MotionEvent.ACTION_MOVE:
@@ -341,10 +341,10 @@ public class DocumentView extends View implements ZoomListener {
 
     @Override
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        for (Page page : pages.values()) {
-            page.draw(canvas);
+        for (int i = 0; i < pages.size(); i++) {
+            pages.get(i).draw(canvas);
         }
+        super.onDraw(canvas);
     }
 
     @Override
@@ -404,5 +404,13 @@ public class DocumentView extends View implements ZoomListener {
 
     public void setInitialized(boolean isInitialized) {
         this.isInitialized = isInitialized;
+    }
+
+    public DecodingProgressModel getProgressModel() {
+        return progressModel;
+    }
+
+    public void setProgressModel(DecodingProgressModel progressModel) {
+        this.progressModel = progressModel;
     }
 }
