@@ -8,6 +8,7 @@ import android.graphics.Canvas;
 import android.graphics.RectF;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
@@ -22,6 +23,9 @@ import com.ebooka.multitouch.MultiTouchZoom;
 import com.ebooka.multitouch.MultiTouchZoomImpl;
 
 public class DocumentView extends View implements ZoomListener {
+
+    float BORDER_LEN = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_MM, 10, getResources().getDisplayMetrics());
+
     ZoomModel zoomModel;
     private CurrentPageModel currentPageModel;
     DecodeService decodeService;
@@ -221,9 +225,10 @@ public class DocumentView extends View implements ZoomListener {
 
             int x = (int) ev.getX();
             int maxX = getWidth();
-            if (x > maxX * 0.80) {
+
+            if (x > (maxX - BORDER_LEN)) {
                 scrollNextPage();
-            } else if (x < maxX * 0.20) {
+            } else if (x < BORDER_LEN) {
                 scrollPrevPage();
             }
 

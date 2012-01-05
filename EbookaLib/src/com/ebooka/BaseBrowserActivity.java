@@ -135,12 +135,8 @@ public abstract class BaseBrowserActivity extends Activity {
                 @Override
                 protected Void doInBackground(Void... params) {
                     recurcive.addAll(FileDirUtils.search(Environment.getExternalStorageDirectory(), ".pdf"));
-                    // recurcive.addAll(FileDirUtils.search(Environment.getExternalStorageDirectory(),
-                    // ".djv"));
-                    //
                     recurcive.addAll(FileDirUtils.search(new File("/media"), ".pdf"));
-                    // recurcive.addAll(FileDirUtils.search(new File("/media"),
-                    // ".djv"));
+                    recurcive.addAll(FileDirUtils.search(new File("/emmc"), ".pdf"));
                     return null;
                 }
 
