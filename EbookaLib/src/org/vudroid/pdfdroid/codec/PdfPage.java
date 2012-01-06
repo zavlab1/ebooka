@@ -116,7 +116,5 @@ public class PdfPage implements CodecPage
 		int[] viewboxarray, float[] matrixarray,
 		ByteBuffer byteBuffer, ByteBuffer tempBuffer);
 
-    private native void nativeCreateView(long dochandle, long pagehandle,
-		int[] viewboxarray, float[] matrixarray,
-		int[] bufferarray);
+    private native void nativeCreateView(long dochandle, long pagehandle, int[] viewboxarray, float[] matrixarray, int[] bufferarray);
 }
