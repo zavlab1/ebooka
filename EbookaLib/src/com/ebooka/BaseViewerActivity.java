@@ -229,13 +229,13 @@ public abstract class BaseViewerActivity extends Activity implements DecodingPro
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         Log.d("DEBUG", "" + keyCode);
 
-        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == 94 || keyCode == 92) {
+        if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == 94 || keyCode == 92 || keyCode==105 || keyCode==19 ) {
             if (viewerPreferences.isUpKeyNext()) {
                 documentView.scrollNextPage();
             } else {
                 documentView.scrollPrevPage();
             }
-        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == 95 || keyCode == 93) {
+        } else if (keyCode == KeyEvent.KEYCODE_VOLUME_DOWN || keyCode == 95 || keyCode == 93 || keyCode==106 || keyCode==20) {
             if (viewerPreferences.isUpKeyNext()) {
                 documentView.scrollPrevPage();
             } else {

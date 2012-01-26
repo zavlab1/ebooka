@@ -3,7 +3,7 @@
           package="com.ebooka" android:versionCode="5" android:versionName="1.4">
     
     <application android:icon="@drawable/icon" android:debuggable="true" android:label="Ebooka">
-        <activity android:name="com.ebooka.PdfViewerActivity" android:configChanges="orientation|keyboardHidden" android:launchMode="singleTask">
+        <activity android:name="com.ebooka.PdfViewerActivity" android:configChanges="orientation|keyboardHidden" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
@@ -13,7 +13,7 @@
             </intent-filter>
         </activity>
         
-        <activity android:name="com.ebooka.DjvuViewerActivity" android:configChanges="orientation|keyboardHidden" android:launchMode="singleTask">
+        <activity android:name="com.ebooka.DjvuViewerActivity" android:configChanges="orientation|keyboardHidden">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
                 <category android:name="android.intent.category.DEFAULT"/>
