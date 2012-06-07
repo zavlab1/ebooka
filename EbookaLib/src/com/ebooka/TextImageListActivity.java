@@ -23,6 +23,17 @@ import android.widget.SimpleAdapter;
 public class TextImageListActivity extends ListActivity {
 	final String ATTRIBUTE_NAME_TEXT = "text";
     final String ATTRIBUTE_NAME_IMAGE = "image";
+    
+    /**
+     * The SimpleAdapter expects an integer or string that specifies a resource or image URI:
+     * public void setViewImage (ImageView v, String value)
+     * Called by bindView() to set the image for an ImageView but only if there is no existing ViewBinder
+     * or if the existing ViewBinder cannot handle binding to an ImageView. 
+     * By default, the value will be treated as an image resource. 
+     * If the value cannot be used as an image resource, the value is used as an image Uri. 
+     * This method is called instead of setViewImage(ImageView, int) if the supplied data is not an int or Integer.
+     * That is why we create our ViewBinder object and than set it for adapter by setViewBinder method
+     */
     private final SimpleAdapter.ViewBinder mViewBinder =
 		    new SimpleAdapter.ViewBinder() {
 		        @Override
@@ -39,7 +50,7 @@ public class TextImageListActivity extends ListActivity {
 		        }
 		    };
     
-		    @Override
+	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         
@@ -50,7 +61,7 @@ public class TextImageListActivity extends ListActivity {
          * for getting of data 
          */
         
-        //for example
+        /* for example */
         rawRowsContent.put("Евро-2012. Цифры и факты", "http://static.ozone.ru/multimedia/books_covers/c200/1005373625.jpg");
         rawRowsContent.put("UEFA Euro 2012", "http://static.ozone.ru/multimedia/books_covers/c200/1005289501.jpg");
         
