@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.ebooka" android:versionCode="5" android:versionName="1.4">
     
+    <uses-permission android:name="android.permission.INTERNET"></uses-permission>
+    
     <application android:icon="@drawable/icon" android:debuggable="true" android:label="Ebooka">
         <activity android:name="com.ebooka.PdfViewerActivity" android:configChanges="orientation|keyboardHidden" >
             <intent-filter>
