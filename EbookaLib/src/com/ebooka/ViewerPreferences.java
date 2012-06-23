@@ -50,7 +50,8 @@ public class ViewerPreferences {
             if (key.startsWith("recent")) {
                 String uriPlusDate = sharedPreferences.getString(key, null);
                 String[] uriThenDate = uriPlusDate.split("\n");
-                treeMap.put(Long.parseLong(uriThenDate.length > 1 ? uriThenDate[1] : "0"), Uri.parse(uriThenDate[0]));
+                treeMap.put(Long.parseLong(
+                		uriThenDate.length > 1 ? uriThenDate[1] : "0"), Uri.parse(uriThenDate[0]));
             }
         }
         ArrayList<Uri> list = new ArrayList<Uri>(treeMap.values());

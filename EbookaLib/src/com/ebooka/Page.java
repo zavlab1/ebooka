@@ -14,14 +14,13 @@ class Page {
     private final TextPaint textPaint = textPaint();
     private final Paint fillPaint = fillPaint();
     private final Paint strokePaint = strokePaint();
-
+    private float aspectRatio;
+    
     Page(DocumentView documentView, int index) {
         this.documentView = documentView;
         this.index = index;
         node = new PageTreeNode(documentView, new RectF(0, 0, 1, 1), this, 1, null);
     }
-
-    private float aspectRatio;
 
     float getPageHeight(int mainWidth, float zoom) {
         return mainWidth / getAspectRatio() * zoom;

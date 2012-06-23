@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -86,9 +88,12 @@ public abstract class BaseViewerActivity extends Activity implements DecodingPro
         ((View) findViewById(R.id.moveRight)).setOnClickListener(onMoveRight);
         ((View) findViewById(R.id.moveDefault)).setOnClickListener(onDefault);
         ((View) findViewById(R.id.prefDialog)).setOnClickListener(onPrefDialog);
-
+        
+        
         currentSeek = (TextView) findViewById(R.id.currentSeek);
         currentSeek.setText(String.valueOf(currentPageIndex + 1));
+        currentSeek.setOnClickListener(onCurrentSeek);
+        
         ((TextView) findViewById(R.id.maxSeek)).setText(String.valueOf(decodeService.getPageCount()));
 
         seekBar = (SeekBar) findViewById(R.id.seekBar);
@@ -224,7 +229,37 @@ public abstract class BaseViewerActivity extends Activity implements DecodingPro
             zoomModel.commit();
         }
     };
+    public View.OnClickListener onCurrentSeek = new View.OnClickListener() {
 
+        public void onClick(View arg0) {
+        	registerForContextMenu(arg0); 
+        	openContextMenu(arg0);
+        	unregisterForContextMenu(arg0);
+        }
+    };
+    
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+    	
+    	if (v.equals(currentSeek) || v.equals(findViewById(R.id.maxSeek))) {
+    		menu.add(0,1,0, "to first page");
+    		menu.add(0,2,0, "to last page");
+    		menu.add(0,3,0, "to page №...");
+    	}
+    }
+    
+    public boolean onContextItemSelected(MenuItem item) {
+    	if (item.getItemId() == 1) {
+    		documentView.goToPage(1);
+    	}
+    	if (item.getItemId() == 2) {
+    		documentView.goToPage(decodeService.getPageCount());
+    	}
+    	if (item.getItemId() == 3) {
+    		documentView.goToPage(1);
+    	}
+    	return true;
+    }
+    
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         Log.d("DEBUG", "" + keyCode);

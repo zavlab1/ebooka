@@ -11,7 +11,8 @@ import android.widget.Toast;
 
 public class MainBrowserActivity extends BaseBrowserActivity
 {
-    private final static HashMap<String, Class<? extends Activity>> extensionToActivity = new HashMap<String, Class<? extends Activity>>();
+    private final static HashMap<String, Class<? extends Activity>> extensionToActivity = 
+    		new HashMap<String, Class<? extends Activity>>();
 
     static
     {

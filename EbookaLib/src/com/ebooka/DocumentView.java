@@ -26,9 +26,10 @@ public class DocumentView extends View implements ZoomListener {
 	float BORDER_LEN = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_MM,
 			10, getResources().getDisplayMetrics());
 
+	DecodeService decodeService;
 	ZoomModel zoomModel;
 	private CurrentPageModel currentPageModel;
-	DecodeService decodeService;
+	private DecodingProgressModel progressModel;
 	private final HashMap<Integer, Page> pages = new HashMap<Integer, Page>();
 	private boolean isInitialized = false;
 	private int pageToGoTo;
@@ -36,7 +37,6 @@ public class DocumentView extends View implements ZoomListener {
 	private float lastY;
 	private VelocityTracker velocityTracker;
 	private Scroller scroller;
-	private DecodingProgressModel progressModel;
 	private RectF viewRect;
 	private boolean inZoom;
 	private long lastDownEventTime;
@@ -68,7 +68,6 @@ public class DocumentView extends View implements ZoomListener {
 		setFocusable(true);
 		setFocusableInTouchMode(true);
 		initMultiTouchZoomIfAvailable(zoomModel);
-
 	}
 
 	private void initMultiTouchZoomIfAvailable(ZoomModel zoomModel) {
@@ -128,7 +127,6 @@ public class DocumentView extends View implements ZoomListener {
 				updatePageVisibility();
 			}
 		});
-
 	}
 
 	private void updatePageVisibility() {
@@ -194,6 +192,7 @@ public class DocumentView extends View implements ZoomListener {
 	public void scrollPrevPage() {
 		scrollBy(0, -1 * getScrollValue());
 	}
+
 
 	@Override
 	public boolean onTouchEvent(MotionEvent ev) {
