@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.text.Editable;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -17,18 +18,21 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.ebooka.dialogs.Alert;
 import com.ebooka.events.CurrentPageListener;
 import com.ebooka.events.DecodingProgressListener;
 import com.ebooka.models.CurrentPageModel;
 import com.ebooka.models.DecodingProgressModel;
 import com.ebooka.models.ZoomModel;
+import com.ebooka.utils.CheckType;
 import com.ebooka.views.MenuLayoutVisibilityEventListener;
 
-public abstract class BaseViewerActivity extends Activity implements DecodingProgressListener, CurrentPageListener {
+public abstract class BaseViewerActivity extends Activity implements DecodingProgressListener, CurrentPageListener, DialogInterface.OnClickListener {
     private static final int MENU_EXIT = 0;
     private static final int MENU_GOTO = 1;
     private static final int MENU_FULL_SCREEN = 2;
@@ -38,7 +42,7 @@ public abstract class BaseViewerActivity extends Activity implements DecodingPro
     private DocumentView documentView;
     private ViewerPreferences viewerPreferences;
     private CurrentPageModel currentPageModel;
-
+    private View promptView;
     /**
      * Called when the activity is first created.
      */
@@ -73,7 +77,7 @@ public abstract class BaseViewerActivity extends Activity implements DecodingPro
 
         final SharedPreferences sharedPreferences = getSharedPreferences(DOCUMENT_VIEW_STATE_PREFERENCES, 0);
         currentPageIndex = sharedPreferences.getInt(getIntent().getData().toString(), 0);
-        documentView.goToPage(currentPageIndex);
+        documentView.goToPage(currentPageIndex + 1);
         documentView.showDocument();
 
         viewerPreferences.addRecent(getIntent().getData());
@@ -124,7 +128,7 @@ public abstract class BaseViewerActivity extends Activity implements DecodingPro
 
         @Override
         public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-            documentView.goToPage(progress - 1);
+            documentView.goToPage(progress);
         }
     };
 
@@ -255,9 +259,31 @@ public abstract class BaseViewerActivity extends Activity implements DecodingPro
     		documentView.goToPage(decodeService.getPageCount());
     	}
     	if (item.getItemId() == 3) {
-    		documentView.goToPage(1);
+    		promptView = Alert.showPrompt(getString(R.string.prompt_message), this);
     	}
     	return true;
+    }
+    
+    public void onClick(DialogInterface v, int buttonId) {
+    	if (buttonId == DialogInterface.BUTTON_POSITIVE) {
+    		EditText et = (EditText) promptView.findViewById(R.id.edit_text_prompt);
+    		Editable ed = et.getText();
+    		String text = ed.toString();
+    		
+    		if (text == null || text.length() == 0) {Log.w("attention", "null string");}
+    		try {
+    			int pageNumber = Integer.parseInt(text);
+    			if (pageNumber <= decodeService.getPageCount() && pageNumber > 0) {
+    				documentView.goToPage(pageNumber);
+    			} else {
+    				Log.w("attention", "Value is out of page diaposone");
+    			}
+    		} catch (NumberFormatException e) {
+    			Log.w("attention", "value is not digit");
+    		} catch (Exception e) {
+    			Log.w("attention", e.getStackTrace().toString());
+    		};
+    	}
     }
     
     @Override
@@ -331,7 +357,6 @@ public abstract class BaseViewerActivity extends Activity implements DecodingPro
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         setWindowTitle();
-
     }
 
     private void setFullScreen() {

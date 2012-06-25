@@ -1,5 +1,6 @@
 package com.ebooka;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -98,7 +99,7 @@ public class DocumentView extends View implements ZoomListener {
 	}
 
 	private void goToPageImpl(final int toPage) {
-		Page page = pages.get(toPage);
+		Page page = pages.get(toPage - 1);
 		if (page != null) {
 			scrollTo(getScrollX(), page.getTop());
 		}
@@ -163,8 +164,11 @@ public class DocumentView extends View implements ZoomListener {
 
 	public int getCurrentPage() {
 		for (Map.Entry<Integer, Page> entry : pages.entrySet()) {
-			if (entry.getValue().isVisible()) {
-				return entry.getKey();
+			Page page = entry.getValue();
+			if (page.isVisible() &&				
+				page.bounds.top <= viewRect.centerY() &&
+				page.bounds.bottom >= viewRect.centerY()) {
+						return entry.getKey();				
 			}
 		}
 		return 0;

@@ -19,4 +19,5 @@
     <string name="prev">Prev</string>
     <string name="close_dialog">Close Dialog</string>
     <string name="clean_recent">Clean Recent</string>
+    <string name="prompt_message">Go to page № ...</string>
 </resources>
