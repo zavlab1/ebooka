@@ -19,5 +19,14 @@
     <string name="prev">Prev</string>
     <string name="close_dialog">Close Dialog</string>
     <string name="clean_recent">Clean Recent</string>
-    <string name="prompt_message">Go to page № ...</string>
+    <string name="gotopage_message">Go to page №...</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="attention">Attention</string>
+    <string name="empty_edit_text">You forgot to enter page number</string>
+    <string name="out_of_range">The value is outside the range of pages</string>
+    <string name="not_number">The entered value must be a number</string>
+    <string name="to_first_page">To first page</string>
+    <string name="to_last_page">To last page</string>
+    <string name="to_n_page">To page №...</string>
 </resources>

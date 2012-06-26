@@ -32,7 +32,8 @@ import com.ebooka.models.ZoomModel;
 import com.ebooka.utils.CheckType;
 import com.ebooka.views.MenuLayoutVisibilityEventListener;
 
-public abstract class BaseViewerActivity extends Activity implements DecodingProgressListener, CurrentPageListener, DialogInterface.OnClickListener {
+public abstract class BaseViewerActivity extends Activity 
+			implements DecodingProgressListener, CurrentPageListener {
     private static final int MENU_EXIT = 0;
     private static final int MENU_GOTO = 1;
     private static final int MENU_FULL_SCREEN = 2;
@@ -245,9 +246,9 @@ public abstract class BaseViewerActivity extends Activity implements DecodingPro
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
     	
     	if (v.equals(currentSeek) || v.equals(findViewById(R.id.maxSeek))) {
-    		menu.add(0,1,0, "to first page");
-    		menu.add(0,2,0, "to last page");
-    		menu.add(0,3,0, "to page №...");
+    		menu.add(0,1,0, R.string.to_first_page);
+    		menu.add(0,2,0, R.string.to_last_page);
+    		menu.add(0,3,0, R.string.to_n_page);
     	}
     }
     
@@ -259,32 +260,11 @@ public abstract class BaseViewerActivity extends Activity implements DecodingPro
     		documentView.goToPage(decodeService.getPageCount());
     	}
     	if (item.getItemId() == 3) {
-    		promptView = Alert.showPrompt(getString(R.string.prompt_message), this);
+    		promptView = Alert.showPrompt(getString(R.string.gotopage_message), this, new PromptDialogClickListener());
     	}
     	return true;
     }
     
-    public void onClick(DialogInterface v, int buttonId) {
-    	if (buttonId == DialogInterface.BUTTON_POSITIVE) {
-    		EditText et = (EditText) promptView.findViewById(R.id.edit_text_prompt);
-    		Editable ed = et.getText();
-    		String text = ed.toString();
-    		
-    		if (text == null || text.length() == 0) {Log.w("attention", "null string");}
-    		try {
-    			int pageNumber = Integer.parseInt(text);
-    			if (pageNumber <= decodeService.getPageCount() && pageNumber > 0) {
-    				documentView.goToPage(pageNumber);
-    			} else {
-    				Log.w("attention", "Value is out of page diaposone");
-    			}
-    		} catch (NumberFormatException e) {
-    			Log.w("attention", "value is not digit");
-    		} catch (Exception e) {
-    			Log.w("attention", e.getStackTrace().toString());
-    		};
-    	}
-    }
     
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
@@ -432,5 +412,31 @@ public abstract class BaseViewerActivity extends Activity implements DecodingPro
             return true;
         }
         return false;
+    }
+    
+    public class PromptDialogClickListener implements DialogInterface.OnClickListener {
+		public void onClick(DialogInterface v, int buttonId) {
+    		if (buttonId == DialogInterface.BUTTON_POSITIVE) {
+    			EditText et = (EditText) promptView.findViewById(R.id.edit_text_prompt);
+    			Editable ed = et.getText();
+    			String text = ed.toString();
+		
+    			if (text == null || text.length() == 0) {
+    				Alert.showAlert(getString(R.string.empty_edit_text), BaseViewerActivity.this);
+    				return;
+    			}
+    			
+    			try {
+    				int pageNumber = Integer.parseInt(text);
+    				if (pageNumber <= decodeService.getPageCount() && pageNumber > 0) {
+    					documentView.goToPage(pageNumber);
+    				} else {
+    					Alert.showAlert(getString(R.string.out_of_range), BaseViewerActivity.this);
+    				}
+    			} catch (NumberFormatException e) {
+    				Alert.showAlert(getString(R.string.not_number), BaseViewerActivity.this);;
+    			}
+    		}
+		}
     }
 }

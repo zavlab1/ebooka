@@ -18,5 +18,15 @@
     <string name="next">След</string>
     <string name="prev">Пред</string>
     <string name="close_dialog">Закрыть диалог</string>
-     <string name="clean_recent">Очистить недавние</string>
+    <string name="clean_recent">Очистить недавние</string>
+    <string name="gotopage_message">Перейти на страницу №...</string>
+    <string name="ok">Да</string>
+    <string name="cancel">Отмена</string>
+    <string name="attention">Внимание</string>
+    <string name="empty_edit_text">Вы забыли ввести номер страницы</string>
+    <string name="out_of_range">Значение выходит за пределы диапазона страниц</string>
+    <string name="not_number">Введённое значение должно быть числом</string>
+    <string name="to_first_page">На первую страницу</string>
+    <string name="to_last_page">На последнюю страницу</string>
+    <string name="to_n_page">На страницу №...</string>
 </resources>
