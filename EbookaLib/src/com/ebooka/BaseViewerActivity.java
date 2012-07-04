@@ -99,8 +99,10 @@ public abstract class BaseViewerActivity extends Activity
         currentSeek.setText(String.valueOf(currentPageIndex + 1));
         currentSeek.setOnClickListener(onCurrentSeek);
         
-        ((TextView) findViewById(R.id.maxSeek)).setText(String.valueOf(decodeService.getPageCount()));
-
+        maxSeek = (TextView) findViewById(R.id.maxSeek);
+        maxSeek.setText(String.valueOf(decodeService.getPageCount()));
+        maxSeek.setOnClickListener(onCurrentSeek);
+        
         seekBar = (SeekBar) findViewById(R.id.seekBar);
         seekBar.setMax(decodeService.getPageCount());
         seekBar.setProgress(currentPageIndex);
@@ -292,6 +294,7 @@ public abstract class BaseViewerActivity extends Activity
     private int currentPageIndex;
     private View menuLayout;
     private TextView currentSeek;
+    private TextView maxSeek;
     private SeekBar seekBar;
 
     public void decodingProgressChanged(final int currentlyDecoding) {
